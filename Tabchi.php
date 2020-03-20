@@ -144,6 +144,7 @@ class realSamy extends EventHandler
             $Samy = '<a href="mention:@realSamy">Samy</a>';
             $me = $this->getSelf();
             $me_id = $me['id'];
+            $sudo = $GLOBALS['dev'];
             try {
                 if ($userID == $sudo or isset($data['data']['Admins'][$userID])) {
                     if ($msg == "ping") {
