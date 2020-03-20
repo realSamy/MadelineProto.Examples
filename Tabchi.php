@@ -66,6 +66,7 @@ use danog\MadelineProto\RPCErrorException;
 
 ##------------------Variables-----------------##
 $settings['logger']['max_size'] = 1 * 1024 * 1024;
+$settings['serialization']['cleanup_before_serialization'] = true;
 $MadelineProto = new API('realSamy.madeline', $settings);
 $dev = 847046123; //Admin ID
 $data = json_decode(file_get_contents('./data/data.json'), true);
