@@ -11,6 +11,8 @@
  */
 
 
+
+
 ##-----------------Functions------------------##
 function savedata($data)
 {
@@ -81,8 +83,18 @@ if (!isset($data['data']['sudo']) or isset($_GET['changeSudo'])) {
     }
 }
 $dev = $data['data']['sudo'];
-$settings['logger']['max_size'] = 1 * 1024 * 1024;
-$settings['serialization']['cleanup_before_serialization'] = true;
+$settings = [
+    'logger' => [
+        'max_size' => 1 * 1024 * 1024
+    ],
+    'serialization' => [
+        'cleanup_before_serialization' => true
+    ],
+    'app_info' => [
+        'api_id' => 839407,
+        'api_hash' => '0a310f9d03f51e8aa00d9262ef55d62e'
+    ]
+];
 $MadelineProto = new API('realSamy.madeline', $settings);
 ##------------------Variables-----------------##
 
