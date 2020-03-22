@@ -1,4 +1,4 @@
-<?php
+<?php /** @noinspection ALL */
 
 
 /**
@@ -8,28 +8,17 @@
  * @author Madeline Farsi <https://t.me/Madeline_Farsi>
  *
  * Join our channel and feel free to use this file!
- * 
  */
 
 
 
 
 ##-----------------Functions------------------##
-/**
- * Saves $data database to data/data.json
- * 
- * @param array $data
- */
 function savedata($data)
 {
     file_put_contents('./data/data.json', json_encode($data, 128|256));
 }
 
-/**
- * Saves $word database to data/word.json
- *
- * @param array $word
- */
 function saveword($word)
 {
     file_put_contents('./data/word.json', json_encode($word, 128|256));
@@ -45,7 +34,7 @@ if (!file_exists('./data/')) {
 if (!file_exists('./data/data.json')) {
     $file = fopen('./data/data.json', 'w');
     fclose($file);
-    $data["data"]["state"] = "خاموش❌";
+    $data["data"]["state"] = "آنلاین✅";
     $data["data"]["Typing"] = "خاموش❌";
     $data["data"]["ANS_PV"] = "خاموش❌";
     $data["data"]["Join"] = "خاموش❌";
@@ -93,7 +82,7 @@ if (!isset($data['data']['sudo']) or isset($_GET['changeSudo'])) {
         header('location: ' . $url[0]);
     }
 }
-$dev = $data['data']['sudo'];
+$dev = (int) $data['data']['sudo'];
 $settings = [
     'logger' => [
         'max_size' => 1 * 1024 * 1024
@@ -120,7 +109,7 @@ class realSamy extends EventHandler
      */
     public function getReportPeers()
     {
-        return [$GLOBALS['dev']];
+        return ['realsamy'];
     }
 
     /**
