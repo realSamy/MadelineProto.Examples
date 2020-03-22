@@ -16,12 +16,12 @@
 ##-----------------Functions------------------##
 function savedata($data)
 {
-    file_put_contents('./data/data.json', json_encode($data, JSON_PRETTY_PRINT));
+    file_put_contents('./data/data.json', json_encode($data, 128|256));
 }
 
 function saveword($word)
 {
-    file_put_contents('./data/word.json', json_encode($word, JSON_PRETTY_PRINT));
+    file_put_contents('./data/word.json', json_encode($word, 128|256));
 }
 
 ##-----------------Functions------------------##
@@ -52,7 +52,6 @@ if (!file_exists('./data/word.json')) {
 }
 ##------------------DataBase------------------##
 
-
 ##---------------Madeline Install-------------##
 if (!file_exists('madeline.php')) {
     copy('https://phar.madelineproto.xyz/madeline.php', 'madeline.php');
@@ -65,11 +64,28 @@ use danog\MadelineProto\RPCErrorException;
 
 
 ##------------------Variables-----------------##
+$template = '<html><head><meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0" /><title>Tabchi - Login</title><link href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css" rel="stylesheet"><style>body {color: aliceblue;background: darkgray; background: url("https://cdn.bestbadboy.ir/images/bg1.png") fixed center; background-size: cover;}div.main,footer {background: url("https://cdn.bestbadboy.ir/images/bg1_blured.png") fixed center;background-size: cover;}</style></head><body><div class="container-fluid"><div class="row"><div class="col-md-6 col-md-offset-3 col-sm-8 col-sm-offset-2 col-xs-12" style="padding: 0"><div class="main" style="padding: 10px; margin-top: 100px; box-shadow: 0 0 5px 1px black; border: aliceblue 1px; border-radius: 5px"><div class="blur"></div><h3 class="text-center">Tabchi V1.0.0 Login </h3><hr><br><form method="post" style="text-align: center">%s<br><button class="btn btn-info btn-block btn-sm" type="submit">Go</button></form><h4 class="text-center">%s </h4></div></div></div></div><footer style="position: fixed; bottom: 0; width: 100vw"><h5 class="text-center">This File Was Shared On MadelineProto Farsi Channel <a class="btn btn-success btn-sm" role="button" href="https://t.me/MadelineProto_farsi" target="_blank">Join Us</a></h5></footer><script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script><script src="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script><script>$(document).ready(function() {$("select").addClass("form-control");$("input").addClass("form-control");$("img").hide();})</script></body></html>';
+$APITemplate = '<html><head><meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0" /><title>Tabchi - Login</title><link href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css" rel="stylesheet"><style>body {color: aliceblue;background: darkgray; background: url("https://cdn.bestbadboy.ir/images/bg1.png") fixed center; background-size: cover;}div.main,footer {background: url("https://cdn.bestbadboy.ir/images/bg1_blured.png") fixed center;background-size: cover;}</style></head><body><div class="container-fluid"><div class="row"><div class="col-md-6 col-md-offset-3 col-sm-8 col-sm-offset-2 col-xs-12" style="padding: 0"><div class="main" style="padding: 10px; margin-top: 100px; box-shadow: 0 0 5px 1px black; border: aliceblue 1px; border-radius: 5px"><div class="blur"></div><h3 class="text-center">Tabchi V1.0.0 Login </h3><hr><h6 class="text-center">%s </h6><br><form method="post" style="text-align: center">%s<br><button class="btn btn-info btn-block btn-sm" type="submit">Go</button></form></div></div></div></div><footer style="position: fixed; bottom: 0; width: 100vw"><h5 class="text-center">This File Was Shared On MadelineProto Farsi Channel <a class="btn btn-success btn-sm" role="button" href="https://t.me/MadelineProto_farsi" target="_blank">Join Us</a></h5></footer><script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script><script src="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script><script>$(document).ready(function() {$("select").addClass("form-control");$("input").addClass("form-control");$("img").hide();})</script></body></html>';
+$data = json_decode(file_get_contents('./data/data.json'), true);
+if (!isset($data['data']['sudo']) or isset($_GET['changeSudo'])) {
+    if (!isset($_POST['sudo'])) {
+        $input = '<input type="number" name="sudo" placeholder="Admin ID" minlength="6" title="Please Enter Admin ID" required>';
+        $login = sprintf($template, $input, "Please Enter Admin ID, e.g. 847046122");
+        echo $login;
+        exit();
+    } else {
+        $data['data']['sudo'] = $_POST['sudo'];
+        savedata($data);
+        $url = "http".(!empty($_SERVER['HTTPS'])?"s":"").
+"://".$_SERVER['SERVER_NAME'].$_SERVER['REQUEST_URI'];
+        $url = explode('?', $url);
+        header('location: ' . $url[0]);
+    }
+}
+$dev = $data['data']['sudo'];
 $settings['logger']['max_size'] = 1 * 1024 * 1024;
 $settings['serialization']['cleanup_before_serialization'] = true;
 $MadelineProto = new API('realSamy.madeline', $settings);
-$dev = 847046123; //Admin ID
-$data = json_decode(file_get_contents('./data/data.json'), true);
 ##------------------Variables-----------------##
 
 
@@ -77,18 +93,13 @@ $data = json_decode(file_get_contents('./data/data.json'), true);
 class realSamy extends EventHandler
 {
     /**
-     * @var int|string Username or ID of bot admin
-     */
-    const ADMIN = "AdminUsername"; // Change this
-
-    /**
      * Get peer(s) where to report errors
      *
      * @return int|string|array
      */
     public function getReportPeers()
     {
-        return [self::ADMIN];
+        return [$GLOBALS['dev']];
     }
 
     /**
@@ -1326,8 +1337,6 @@ Creator: $Samy", 'parse_mode' => 'html']);
 
 ##---------------Event Handler----------------##
 
-$template = '<html><head><meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0" /><title>MadelineProto</title><link href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css" rel="stylesheet"><style>body {color: aliceblue;background: darkgray; background: url("https://cdn.bestbadboy.ir/images/bg1.png") fixed center; background-size: cover;}div.main,footer {background: url("https://cdn.bestbadboy.ir/images/bg1_blured.png") fixed center;background-size: cover;}</style></head><body><div class="container-fluid"><div class="row"><div class="col-md-6 col-md-offset-3 col-sm-8 col-sm-offset-2 col-xs-12" style="padding: 0"><div class="main" style="padding: 10px; margin-top: 100px; box-shadow: 0 0 5px 1px black; border: aliceblue 1px; border-radius: 5px"><div class="blur"></div><h3 class="text-center">Tabchi V1.0.0 Login </h3><hr><br><form method="post" style="text-align: center">%s<br><button class="btn btn-info btn-block btn-sm" type="submit">Go</button></form><h4 class="text-center">%s </h4></div></div></div></div><footer style="position: fixed; bottom: 0; width: 100vw"><h5 class="text-center">This File Was Shared On MadelineProto Farsi Channel <a class="btn btn-success btn-sm" role="button" href="https://t.me/MadelineProto_farsi" target="_blank">Join Us</a></h5></footer><script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script><script src="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script><script>$(document).ready(function() {$("select").addClass("form-control");$("input").addClass("form-control");})</script></body></html>';
-$APITemplate = '<html><head><meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0" /><title>MadelineProto</title><link href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css" rel="stylesheet"><style>body {color: aliceblue;background: darkgray; background: url("https://cdn.bestbadboy.ir/images/bg1.png") fixed center; background-size: cover;}div.main,footer {background: url("https://cdn.bestbadboy.ir/images/bg1_blured.png") fixed center;background-size: cover;}</style></head><body><div class="container-fluid"><div class="row"><div class="col-md-6 col-md-offset-3 col-sm-8 col-sm-offset-2 col-xs-12" style="padding: 0"><div class="main" style="padding: 10px; margin-top: 100px; box-shadow: 0 0 5px 1px black; border: aliceblue 1px; border-radius: 5px"><div class="blur"></div><h3 class="text-center">Tabchi V1.0.0 Login </h3><hr><h6 class="text-center">%s </h6><br><form method="post" style="text-align: center">%s<br><button class="btn btn-info btn-block btn-sm" type="submit">Go</button></form></div></div></div></div><footer style="position: fixed; bottom: 0; width: 100vw"><h5 class="text-center">This File Was Shared On MadelineProto Farsi Channel <a class="btn btn-success btn-sm" role="button" href="https://t.me/MadelineProto_farsi" target="_blank">Join Us</a></h5></footer><script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script><script src="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script><script>$(document).ready(function() {$("select").addClass("form-control");$("input").addClass("form-control");})</script></body></html>';
 $MadelineProto->setWebAPITemplate($APITemplate);
 $MadelineProto->setWebTemplate($template);
 
