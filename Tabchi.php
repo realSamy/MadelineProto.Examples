@@ -8,17 +8,28 @@
  * @author Madeline Farsi <https://t.me/Madeline_Farsi>
  *
  * Join our channel and feel free to use this file!
+ * 
  */
 
 
 
 
 ##-----------------Functions------------------##
+/**
+ * Saves $data database to data/data.json
+ * 
+ * @param array $data
+ */
 function savedata($data)
 {
     file_put_contents('./data/data.json', json_encode($data, 128|256));
 }
 
+/**
+ * Saves $word database to data/word.json
+ *
+ * @param array $word
+ */
 function saveword($word)
 {
     file_put_contents('./data/word.json', json_encode($word, 128|256));
@@ -77,7 +88,7 @@ if (!isset($data['data']['sudo']) or isset($_GET['changeSudo'])) {
         $data['data']['sudo'] = $_POST['sudo'];
         savedata($data);
         $url = "http".(!empty($_SERVER['HTTPS'])?"s":"").
-"://".$_SERVER['SERVER_NAME'].$_SERVER['REQUEST_URI'];
+            "://".$_SERVER['SERVER_NAME'].$_SERVER['REQUEST_URI'];
         $url = explode('?', $url);
         header('location: ' . $url[0]);
     }
@@ -937,7 +948,7 @@ Creator: $Samy", 'parse_mode' => 'html']);
                     }
                     if ($type == "supergroup" or $type3 == "chat") {
                         if ($ANS_GP === "آنلاین✅") {
-                            if (preg_match("/^([س|د|ص|ث]{1,8}[ل]{1,8}[ا|آ]{1,8}[م]{1,8})|([s]{1,8}[l]{1,8}[m]{1,8})|([s]{1,8}[a]{1,8}[l]{1,8}[a]{1,8}[m]{1,8})/i", $msg)) {
+                            if (preg_match("/^([سدصث]{1,8}[ل]{1,8}[اآ]{1,8}[م]{1,8})|([s]{1,8}[l]{1,8}[m]{1,8})|([s]{1,8}[a]{1,8}[l]{1,8}[a]{1,8}[m]{1,8})/i", $msg)) {
                                 if ($Read === "آنلاین✅") {
                                     yield $this->channels->readMessageContents(['channel' => $chatID, 'id' => [$msg_id]]);
                                 }
@@ -1347,7 +1358,6 @@ Creator: $Samy", 'parse_mode' => 'html']);
 
 ##---------------Event Handler----------------##
 
-$MadelineProto->setWebAPITemplate($APITemplate);
-$MadelineProto->setWebTemplate($template);
+
 
 $MadelineProto->startAndLoop(realSamy::class);
