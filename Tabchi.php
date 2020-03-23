@@ -109,7 +109,7 @@ class realSamy extends EventHandler
      */
     public function getReportPeers()
     {
-        return ['realsamy'];
+        return [];
     }
 
     /**
