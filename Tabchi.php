@@ -10,9 +10,6 @@
  * Join our channel and feel free to use this file!
  */
 
-
-
-
 ##-----------------Functions------------------##
 function savedata($data)
 {
